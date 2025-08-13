@@ -1,0 +1,104 @@
+# LangGraph Content Summarizer
+
+This project implements a flexible content summarization pipeline using LangGraph. It can summarize text from various sources including web URLs, PDF files, text files, and direct text input. It leverages Large Language Models (LLMs) accessed through the OpenRouter API.
+
+This project is a demonstration of "Vibe Coding" and showcases how AI tools can be effectively integrated into a developer's day-to-day workflow for planning, designing, and documenting software.
+
+## Features
+
+*   **Multi-source Input:** Summarize content from web pages, PDFs, text files, or direct text strings.
+*   **LangGraph Pipeline:** Robust and configurable workflow management.
+*   **LLM Integration:** Uses LLMs via the OpenRouter API.
+*   **Configurable LLM:** Easily switch LLMs by changing environment variables.
+
+## Prerequisites
+
+*   Python 3.9 or higher
+*   An OpenRouter API key (sign up at [https://openrouter.ai/](https://openrouter.ai/))
+
+## Installation
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone <repository-url>
+    cd langgraph-content-summarizer
+    ```
+
+2.  **Create a virtual environment (recommended):**
+
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    ```
+
+3.  **Install dependencies:**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+## Configuration
+
+The application requires the following environment variables to be set. Create a `.env` file in the project root directory and add your configuration:
+
+```env
+# OpenRouter API Configuration
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+LLM_MODEL=meta-llama/llama-3.1-8b-instruct:free # Or any other model available on OpenRouter
+
+# Optional: Configure chunking behavior (example values)
+CHUNK_SIZE=1000
+CHUNK_OVERLAP=100
+```
+
+Replace `your_openrouter_api_key_here` with your actual OpenRouter API key.
+
+## Usage
+
+*(Note: The core pipeline logic needs to be implemented based on `QWEN.md`. This section assumes the main script is `summarize.py`.)*
+
+Once configured, you can run the summarizer. The exact command will depend on how the input type and source are specified in the implementation. A general structure might be:
+
+```bash
+# Activate virtual environment if not already active
+source venv/bin/activate
+
+# Example command structure (implementation dependent)
+# python summarize.py --type url --source "https://example.com/article"
+# python summarize.py --type pdf --source "/path/to/document.pdf"
+# python summarize.py --type textfile --source "/path/to/text.txt"
+# python summarize.py --type text --content "Your text to summarize goes here..."
+```
+
+Please refer to the implementation details in `summarize.py` (or the main entry point script) for the specific command-line arguments and options supported.
+
+## Contributing
+
+Contributions are welcome! Here's how you can contribute:
+
+1.  **Fork the repository** on GitHub.
+2.  **Create a new branch** for your feature or bug fix:
+    ```bash
+    git checkout -b feature/your-feature-name
+    # or
+    git checkout -b bugfix/your-bug-fix
+    ```
+3.  **Make your changes** and ensure they adhere to the project's style and conventions.
+4.  **Add or update tests** if applicable.
+5.  **Commit your changes:**
+    ```bash
+    git commit -m "Add a brief description of your changes"
+    ```
+6.  **Push to your fork:**
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+7.  **Open a Pull Request** on the original repository.
+
+Please ensure your code is well-documented and tested before submitting a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
