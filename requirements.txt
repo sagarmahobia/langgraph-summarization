@@ -3,6 +3,7 @@ langchain
 langchain-community
 langchain-core
 langchain-text-splitters
+langchain-openai
 pypdf
 python-dotenv
 requests

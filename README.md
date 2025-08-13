@@ -10,6 +10,7 @@ This project is a demonstration of "Vibe Coding" and showcases how AI tools can 
 *   **LangGraph Pipeline:** Robust and configurable workflow management.
 *   **LLM Integration:** Uses LLMs via the OpenRouter API.
 *   **Configurable LLM:** Easily switch LLMs by changing environment variables.
+*   **Intelligent Chunking:** Automatically splits large documents into manageable chunks for processing.
 
 ## Prerequisites
 
@@ -58,22 +59,51 @@ Replace `your_openrouter_api_key_here` with your actual OpenRouter API key.
 
 ## Usage
 
-*(Note: The core pipeline logic needs to be implemented based on `QWEN.md`. This section assumes the main script is `summarize.py`.)*
-
-Once configured, you can run the summarizer. The exact command will depend on how the input type and source are specified in the implementation. A general structure might be:
+Once configured, you can run the summarizer with various input types:
 
 ```bash
 # Activate virtual environment if not already active
-source venv/bin/activate
+source .venv/bin/activate
 
-# Example command structure (implementation dependent)
-# python summarize.py --type url --source "https://example.com/article"
-# python summarize.py --type pdf --source "/path/to/document.pdf"
-# python summarize.py --type textfile --source "/path/to/text.txt"
-# python summarize.py --type text --content "Your text to summarize goes here..."
+# Summarize a web page
+python -m src.main --url "https://example.com/article"
+
+# Summarize a PDF file
+python -m src.main --pdf "/path/to/document.pdf"
+
+# Summarize a text file
+python -m src.main --textfile "/path/to/text.txt"
+
+# Summarize direct text content
+python -m src.main --text "Your text to summarize goes here..."
+
+# Override chunking parameters
+python -m src.main --text "Your text here..." --chunk-size 500 --chunk-overlap 50
 ```
 
-Please refer to the implementation details in `summarize.py` (or the main entry point script) for the specific command-line arguments and options supported.
+## Project Structure
+
+```
+src/
+├── main.py              # Entry point for the application
+├── pipeline.py          # LangGraph workflow definition
+├── loaders/             # Content loading modules
+│   └── __init__.py      # Content loader implementation
+├── nodes/               # LangGraph nodes
+│   ├── summarize_node.py # Chunk summarization node
+│   └── combine_node.py   # Summary combination node
+├── utils/               # Utility functions
+│   └── text_splitter.py  # Text splitting utility
+```
+
+## Testing
+
+A simple test script is included to verify the pipeline works correctly:
+
+```bash
+# Run the test (requires OPENROUTER_API_KEY to be set)
+python test_pipeline.py
+```
 
 ## Contributing
 
