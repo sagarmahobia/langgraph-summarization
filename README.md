@@ -15,6 +15,7 @@ This project is a demonstration of "Vibe Coding" and showcases how AI tools can 
 
 *   Python 3.9 or higher
 *   An OpenRouter API key (sign up at [https://openrouter.ai/](https://openrouter.ai/))
+*   `uv` package manager (install from [https://github.com/astral-sh/uv](https://github.com/astral-sh/uv))
 
 ## Installation
 
@@ -25,17 +26,17 @@ This project is a demonstration of "Vibe Coding" and showcases how AI tools can 
     cd langgraph-content-summarizer
     ```
 
-2.  **Create a virtual environment (recommended):**
+2.  **Create a virtual environment with `uv` (recommended):**
 
     ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    uv venv
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
     ```
 
-3.  **Install dependencies:**
+3.  **Install dependencies using `uv`:**
 
     ```bash
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
     ```
 
 ## Configuration

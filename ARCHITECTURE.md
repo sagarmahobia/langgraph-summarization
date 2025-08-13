@@ -95,3 +95,4 @@ This document outlines the high-level architecture of the LangGraph Content Summ
 *   **LangChain:** Provides `Document` abstractions, text splitters, and LLM wrappers.
 *   **Loaders:** `langchain_community.document_loaders` (Web, PDF, Text).
 *   **OpenRouter API:** Interface for accessing various LLMs.
+*   **uv:** Package manager for Python dependencies.

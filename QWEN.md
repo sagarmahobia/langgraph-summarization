@@ -50,6 +50,7 @@ Create a flexible LangGraph pipeline capable of summarizing content from various
 *   **Environment Variables:** For `OPENROUTER_API_KEY`, `OPENROUTER_BASE_URL`, and `LLM_MODEL`.
 *   **LangChain:** For LLM integration, chains, and utilities.
 *   **Python:** Core language for implementation.
+*   **uv:** Package manager for Python dependencies.
 
 ## Considerations
 
