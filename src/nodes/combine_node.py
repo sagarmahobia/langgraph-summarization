@@ -20,6 +20,7 @@ def combine_summaries(state: Any) -> Dict[str, Any]:
     """
     # Access attributes using dot notation for Pydantic models
     summaries = state.summaries
+    max_summary_length = getattr(state, "max_summary_length", 5)
     
     # If there's only one summary, return it as is
     if len(summaries) <= 1:
@@ -33,15 +34,19 @@ def combine_summaries(state: Any) -> Dict[str, Any]:
         temperature=0.0  # Low temperature for factual consistency
     )
     
-    # Create improved prompt template for combining summaries
+    # Create improved prompt template for combining summaries - explicitly requesting concise summaries
     summaries_text = "\n\n".join([f"- {summary}" for summary in summaries])
     
+    # Set sentence limit with min=3, max=10, default=5
+    sentence_limit = max(3, min(max_summary_length, 10))
+    
     prompt_template = PromptTemplate.from_template(
-        "You are a skilled editor tasked with combining multiple summaries into a single, coherent, and comprehensive summary.\n\n"
+        "You are a skilled editor tasked with combining multiple summaries into a single, concise, and coherent summary.\n\n"
         "Individual summaries:\n{summaries}\n\n"
-        "Please synthesize these summaries into one well-structured summary that captures all essential information. "
-        "Remove redundancies, maintain logical flow, and ensure the result reads as a unified piece of text rather than a list of separate points.\n\n"
-        "Combined Summary:"
+        f"Please synthesize these summaries into one well-structured summary in exactly {sentence_limit} sentences. "
+        "Remove redundancies, maintain logical flow, and ensure the result reads as a unified piece of text rather than a list of separate points. "
+        "Focus only on the most essential information and keep it as brief as possible while maintaining clarity.\n\n"
+        "Concise Combined Summary:"
     )
     
     # Format prompt with summaries

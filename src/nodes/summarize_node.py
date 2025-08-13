@@ -30,12 +30,12 @@ def summarize_chunks(state: Any) -> Dict[str, Any]:
         temperature=0.0  # Low temperature for factual consistency
     )
     
-    # Create improved prompt template for summarization
+    # Create improved prompt template for summarization - explicitly requesting concise summaries
     prompt_template = PromptTemplate.from_template(
-        "You are a precise summarization assistant. Your task is to create a concise, accurate summary of the provided text while preserving key information and main points.\n\n"
+        "You are a precise summarization assistant. Your task is to create a very concise, accurate summary of the provided text while preserving key information and main points.\n\n"
         "Text to summarize:\n{chunk_text}\n\n"
-        "Please provide a clear, factual summary that captures the essential information. Focus on the main points and key details. Keep it concise but comprehensive.\n\n"
-        "Summary:"
+        "Please provide a clear, factual summary in exactly 1-2 sentences. Focus only on the most essential information. Keep it as brief as possible while maintaining clarity.\n\n"
+        "Concise Summary:"
     )
     
     summaries = []

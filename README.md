@@ -52,9 +52,9 @@ OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 LLM_MODEL=meta-llama/llama-3.1-8b-instruct:free
 
 # Optional: Configure chunking behavior
-# For sentence transformers, smaller chunks work better
-CHUNK_SIZE=250
-CHUNK_OVERLAP=25
+# For sentence transformers, smaller chunks work better for concise summaries
+CHUNK_SIZE=150
+CHUNK_OVERLAP=15
 ```
 
 Replace `your_openrouter_api_key_here` with your actual OpenRouter API key.
@@ -80,7 +80,10 @@ python -m src.main --textfile "samples/healthcare_ai.txt"
 python -m src.main --text "Your text to summarize goes here..."
 
 # Override chunking parameters
-python -m src.main --text "Your text here..." --chunk-size 250 --chunk-overlap 25
+python -m src.main --text "Your text here..." --chunk-size 150 --chunk-overlap 15
+
+# Limit final summary length to 3 sentences
+python -m src.main --url "https://example.com/article" --max-summary-length 3
 ```
 
 ## Sample Files

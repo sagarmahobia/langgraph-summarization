@@ -52,14 +52,21 @@ def main():
         "--chunk-size",
         type=int,
         default=None,
-        help="Override chunk size (default: use CHUNK_SIZE env var or 1000)"
+        help="Override chunk size (default: use CHUNK_SIZE env var or 150)"
     )
     
     parser.add_argument(
         "--chunk-overlap",
         type=int,
         default=None,
-        help="Override chunk overlap (default: use CHUNK_OVERLAP env var or 100)"
+        help="Override chunk overlap (default: use CHUNK_OVERLAP env var or 15)"
+    )
+    
+    parser.add_argument(
+        "--max-summary-length",
+        type=int,
+        default=5,
+        help="Maximum number of sentences in final summary (default: 5)"
     )
     
     args = parser.parse_args()
@@ -100,8 +107,9 @@ def main():
         content = args.text
     
     # Get chunking configuration
-    chunk_size = args.chunk_size or int(os.getenv("CHUNK_SIZE", "250"))
-    chunk_overlap = args.chunk_overlap or int(os.getenv("CHUNK_OVERLAP", "25"))
+    chunk_size = args.chunk_size or int(os.getenv("CHUNK_SIZE", "150"))
+    chunk_overlap = args.chunk_overlap or int(os.getenv("CHUNK_OVERLAP", "15"))
+    max_summary_length = args.max_summary_length
     
     # Import here to avoid issues with env vars
     try:
@@ -111,7 +119,8 @@ def main():
             input_type=input_type,
             content=content,
             chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap
+            chunk_overlap=chunk_overlap,
+            max_summary_length=max_summary_length
         ))
         print(summary)
     except Exception as e:

@@ -20,6 +20,7 @@ class State(BaseModel):
     content: str
     chunk_size: int
     chunk_overlap: int
+    max_summary_length: Optional[int] = None
     documents: List[Any] = Field(default_factory=list)
     chunks: List[Any] = Field(default_factory=list)
     summaries: List[str] = Field(default_factory=list)
@@ -64,8 +65,9 @@ def create_workflow():
 async def summarize_content(
     input_type: str,
     content: str,
-    chunk_size: int = 1000,
-    chunk_overlap: int = 100
+    chunk_size: int = 150,
+    chunk_overlap: int = 15,
+    max_summary_length: Optional[int] = None
 ) -> str:
     """
     Summarize content using the LangGraph pipeline.
@@ -75,6 +77,7 @@ async def summarize_content(
         content: The actual content (URL, file path, or text)
         chunk_size: Size of text chunks
         chunk_overlap: Overlap between chunks
+        max_summary_length: Maximum number of sentences in final summary
         
     Returns:
         The final summary as a string
@@ -88,7 +91,8 @@ async def summarize_content(
         input_type=input_type,
         content=content,
         chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap
+        chunk_overlap=chunk_overlap,
+        max_summary_length=max_summary_length
     )
     
     # Run the workflow
