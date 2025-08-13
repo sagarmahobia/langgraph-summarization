@@ -26,21 +26,6 @@ class State(BaseModel):
     final_summary: str = ""
 
 
-def route_input(state: State) -> str:
-    """Route to the appropriate loader based on input type"""
-    return "loader"
-
-
-def route_after_loading(state: State) -> str:
-    """Route after content loading"""
-    return "splitter"
-
-
-def route_after_splitting(state: State) -> str:
-    """Route after text splitting"""
-    return "summarizer"
-
-
 def route_after_summarizing(state: State) -> str:
     """Route after chunk summarization"""
     # If we have multiple summaries, combine them
@@ -49,11 +34,6 @@ def route_after_summarizing(state: State) -> str:
     else:
         # If we have only one summary, it's our final summary
         return "output"
-
-
-def route_to_output(state: State) -> str:
-    """Route to output"""
-    return "output"
 
 
 def create_workflow():
@@ -68,22 +48,9 @@ def create_workflow():
     workflow.add_node("combiner", combine_summaries)
     workflow.add_node("output", lambda state: {"final_summary": state.get("final_summary", "")})
     
-    # Add edges
-    workflow.add_conditional_edges(
-        "loader",
-        route_after_loading,
-        {
-            "splitter": "splitter",
-        }
-    )
-    
-    workflow.add_conditional_edges(
-        "splitter",
-        route_after_splitting,
-        {
-            "summarizer": "summarizer",
-        }
-    )
+    # Add edges - simplified using direct string values
+    workflow.add_edge("loader", "splitter")
+    workflow.add_edge("splitter", "summarizer")
     
     workflow.add_conditional_edges(
         "summarizer",
