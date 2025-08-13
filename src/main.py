@@ -7,6 +7,7 @@ This script handles command-line arguments and orchestrates the summarization pr
 import argparse
 import os
 import sys
+import asyncio
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -99,18 +100,19 @@ def main():
         content = args.text
     
     # Get chunking configuration
-    chunk_size = args.chunk_size or int(os.getenv("CHUNK_SIZE", "1000"))
-    chunk_overlap = args.chunk_overlap or int(os.getenv("CHUNK_OVERLAP", "100"))
+    chunk_size = args.chunk_size or int(os.getenv("CHUNK_SIZE", "250"))
+    chunk_overlap = args.chunk_overlap or int(os.getenv("CHUNK_OVERLAP", "25"))
     
     # Import here to avoid issues with env vars
     try:
         from src.pipeline import summarize_content
-        summary = summarize_content(
+        # Run the async function
+        summary = asyncio.run(summarize_content(
             input_type=input_type,
             content=content,
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap
-        )
+        ))
         print(summary)
     except Exception as e:
         print(f"Error during summarization: {str(e)}", file=sys.stderr)

@@ -9,7 +9,7 @@ from langchain.prompts import PromptTemplate
 from langchain_core.documents import Document
 
 
-def summarize_chunks(state: Dict[str, Any]) -> Dict[str, Any]:
+def summarize_chunks(state: Any) -> Dict[str, Any]:
     """
     Summarize text chunks using an LLM.
     
@@ -19,19 +19,23 @@ def summarize_chunks(state: Dict[str, Any]) -> Dict[str, Any]:
     Returns:
         Updated state with chunk summaries
     """
-    chunks = state["chunks"]
+    # Access attributes using dot notation for Pydantic models
+    chunks = state.chunks
     
-    # Initialize LLM
+    # Initialize LLM with low temperature for consistent, factual summaries
     llm = ChatOpenAI(
         model=os.getenv("LLM_MODEL", "meta-llama/llama-3.1-8b-instruct:free"),
         openai_api_key=os.getenv("OPENROUTER_API_KEY"),
         openai_api_base=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
-        temperature=0.0
+        temperature=0.0  # Low temperature for factual consistency
     )
     
-    # Create prompt template for summarization
+    # Create improved prompt template for summarization
     prompt_template = PromptTemplate.from_template(
-        "Please provide a concise summary of the following text:\n\n{chunk_text}\n\nSummary:"
+        "You are a precise summarization assistant. Your task is to create a concise, accurate summary of the provided text while preserving key information and main points.\n\n"
+        "Text to summarize:\n{chunk_text}\n\n"
+        "Please provide a clear, factual summary that captures the essential information. Focus on the main points and key details. Keep it concise but comprehensive.\n\n"
+        "Summary:"
     )
     
     summaries = []
@@ -46,6 +50,5 @@ def summarize_chunks(state: Dict[str, Any]) -> Dict[str, Any]:
         summary = response.content.strip()
         summaries.append(summary)
     
-    # Update state with summaries
-    state["summaries"] = summaries
-    return state
+    # Return updated state
+    return {"summaries": summaries}

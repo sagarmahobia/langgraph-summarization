@@ -7,7 +7,7 @@ from langchain_text_splitters import SentenceTransformersTokenTextSplitter
 from langchain_core.documents import Document
 
 
-def split_text(state: Dict[str, Any]) -> Dict[str, Any]:
+def split_text(state: Any) -> Dict[str, Any]:
     """
     Split documents into chunks based on configured size and overlap.
     
@@ -17,9 +17,10 @@ def split_text(state: Dict[str, Any]) -> Dict[str, Any]:
     Returns:
         Updated state with text chunks
     """
-    documents = state["documents"]
-    chunk_size = state["chunk_size"]
-    chunk_overlap = state["chunk_overlap"]
+    # Access attributes using dot notation for Pydantic models
+    documents = state.documents
+    chunk_size = state.chunk_size
+    chunk_overlap = state.chunk_overlap
     
     # Initialize sentence-based text splitter
     text_splitter = SentenceTransformersTokenTextSplitter(
@@ -30,6 +31,5 @@ def split_text(state: Dict[str, Any]) -> Dict[str, Any]:
     # Split documents into chunks
     chunks = text_splitter.split_documents(documents)
     
-    # Update state with chunks
-    state["chunks"] = chunks
-    return state
+    # Return updated state
+    return {"chunks": chunks}

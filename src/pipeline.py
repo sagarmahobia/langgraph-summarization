@@ -8,7 +8,7 @@ from typing import List, Dict, Any, Optional
 from langgraph.graph import StateGraph, END
 from pydantic import BaseModel, Field
 
-from src.loaders import load_content
+from src.loaders.content_loader import load_content
 from src.utils.text_splitter import split_text
 from src.nodes.summarize_node import summarize_chunks
 from src.nodes.combine_node import combine_summaries
@@ -36,7 +36,7 @@ def create_workflow():
     workflow.add_node("splitter", split_text)
     workflow.add_node("summarizer", summarize_chunks)
     workflow.add_node("combiner", combine_summaries)
-    workflow.add_node("output", lambda state: {"final_summary": state.get("final_summary", "")})
+    workflow.add_node("output", lambda state: {"final_summary": getattr(state, "final_summary", "")})
     
     # Add edges - simplified using direct string values
     workflow.add_edge("loader", "splitter")
@@ -45,7 +45,7 @@ def create_workflow():
     # Use lambda instead of dedicated function
     workflow.add_conditional_edges(
         "summarizer",
-        lambda state: "combiner" if len(state.summaries) > 1 else "output",
+        lambda state: "combiner" if len(getattr(state, "summaries", [])) > 1 else "output",
         {
             "combiner": "combiner",
             "output": "output"

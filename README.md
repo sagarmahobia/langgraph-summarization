@@ -11,6 +11,7 @@ This project is a demonstration of "Vibe Coding" and showcases how AI tools can 
 *   **LLM Integration:** Uses LLMs via the OpenRouter API.
 *   **Configurable LLM:** Easily switch LLMs by changing environment variables.
 *   **Intelligent Chunking:** Automatically splits large documents into manageable chunks for processing.
+*   **Consistent Output:** Uses low temperature settings (0.0) for factual, consistent summaries.
 
 ## Prerequisites
 
@@ -48,11 +49,12 @@ The application requires the following environment variables to be set. Create a
 # OpenRouter API Configuration
 OPENROUTER_API_KEY=your_openrouter_api_key_here
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
-LLM_MODEL=meta-llama/llama-3.1-8b-instruct:free # Or any other model available on OpenRouter
+LLM_MODEL=meta-llama/llama-3.1-8b-instruct:free
 
-# Optional: Configure chunking behavior (example values)
-CHUNK_SIZE=1000
-CHUNK_OVERLAP=100
+# Optional: Configure chunking behavior
+# For sentence transformers, smaller chunks work better
+CHUNK_SIZE=250
+CHUNK_OVERLAP=25
 ```
 
 Replace `your_openrouter_api_key_here` with your actual OpenRouter API key.
@@ -69,17 +71,23 @@ source .venv/bin/activate
 python -m src.main --url "https://example.com/article"
 
 # Summarize a PDF file
-python -m src.main --pdf "/path/to/document.pdf"
+python -m src.main --pdf "samples/drylab.pdf"
 
 # Summarize a text file
-python -m src.main --textfile "/path/to/text.txt"
+python -m src.main --textfile "samples/healthcare_ai.txt"
 
 # Summarize direct text content
 python -m src.main --text "Your text to summarize goes here..."
 
 # Override chunking parameters
-python -m src.main --text "Your text here..." --chunk-size 500 --chunk-overlap 50
+python -m src.main --text "Your text here..." --chunk-size 250 --chunk-overlap 25
 ```
+
+## Sample Files
+
+The repository includes sample files for testing:
+- `samples/healthcare_ai.txt` - A text file about AI in healthcare
+- `samples/drylab.pdf` - A PDF file (about a company newsletter)
 
 ## Project Structure
 
