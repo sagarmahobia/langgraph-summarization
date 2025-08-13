@@ -3,7 +3,7 @@ Text splitting utility for dividing large documents into chunks.
 """
 
 from typing import List, Dict, Any
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import SentenceTransformersTokenTextSplitter
 from langchain_core.documents import Document
 
 
@@ -21,11 +21,10 @@ def split_text(state: Dict[str, Any]) -> Dict[str, Any]:
     chunk_size = state["chunk_size"]
     chunk_overlap = state["chunk_overlap"]
     
-    # Initialize text splitter
-    text_splitter = RecursiveCharacterTextSplitter(
+    # Initialize sentence-based text splitter
+    text_splitter = SentenceTransformersTokenTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
-        length_function=len,
     )
     
     # Split documents into chunks

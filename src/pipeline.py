@@ -26,16 +26,6 @@ class State(BaseModel):
     final_summary: str = ""
 
 
-def route_after_summarizing(state: State) -> str:
-    """Route after chunk summarization"""
-    # If we have multiple summaries, combine them
-    if len(state.summaries) > 1:
-        return "combiner"
-    else:
-        # If we have only one summary, it's our final summary
-        return "output"
-
-
 def create_workflow():
     """Create and configure the LangGraph workflow"""
     # Define a LangGraph state machine
@@ -52,9 +42,10 @@ def create_workflow():
     workflow.add_edge("loader", "splitter")
     workflow.add_edge("splitter", "summarizer")
     
+    # Use lambda instead of dedicated function
     workflow.add_conditional_edges(
         "summarizer",
-        route_after_summarizing,
+        lambda state: "combiner" if len(state.summaries) > 1 else "output",
         {
             "combiner": "combiner",
             "output": "output"
@@ -101,6 +92,6 @@ async def summarize_content(
     )
     
     # Run the workflow
-    final_state = await app.ainvoke(initial_state.dict())
+    final_state = await app.ainvoke(initial_state.model_dump())
     
     return final_state["final_summary"]
