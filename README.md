@@ -61,30 +61,50 @@ Replace `your_openrouter_api_key_here` with your actual OpenRouter API key.
 
 ## Usage
 
-Once configured, you can run the summarizer with various input types:
+Once configured, you can run the summarizer through either the command-line interface or the web application:
+
+### Command-Line Interface
 
 ```bash
 # Activate virtual environment if not already active
 source .venv/bin/activate
 
-# Summarize a web page
-python -m src.main --url "https://example.com/article"
+# Run with a URL
+python src/main.py --url "https://example.com/article"
 
-# Summarize a PDF file
-python -m src.main --pdf "samples/drylab.pdf"
+# Run with a PDF file
+python src/main.py --pdf "path/to/document.pdf"
 
-# Summarize a text file
-python -m src.main --textfile "samples/healthcare_ai.txt"
+# Run with a text file
+python src/main.py --textfile "path/to/document.txt"
 
-# Summarize direct text content
-python -m src.main --text "Your text to summarize goes here..."
+# Run with direct text
+python src/main.py --text "Your text to summarize"
 
-# Override chunking parameters
-python -m src.main --text "Your text here..." --chunk-size 150 --chunk-overlap 15
-
-# Limit final summary length to 3 sentences
-python -m src.main --url "https://example.com/article" --max-summary-length 3
+# Additional options for chunking and summary length
+python src/main.py --url "https://example.com/article" --chunk-size 200 --chunk-overlap 20 --max-summary-length 3
 ```
+
+### Web Application
+
+```bash
+# Activate virtual environment if not already active
+source .venv/bin/activate
+
+# Run the web app
+python src/web_app.py
+```
+
+The web application provides a user-friendly UI with:
+- Dropdown for selecting content type (URL, PDF, Text file, Direct text)
+- Appropriate input fields for each content type
+- File uploaders for PDF and text files (max 1MB)
+- Configuration options
+- Real-time processing status and results
+
+Access the web application at: http://localhost:8501
+
+Note: The web application uses Streamlit and runs in your browser.
 
 ## Sample Files
 

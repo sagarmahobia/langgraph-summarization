@@ -2,6 +2,7 @@
 """
 Main entry point for the LangGraph Content Summarizer.
 This script handles command-line arguments and orchestrates the summarization process.
+For a GUI, run `python src/desktop_app.py` instead.
 """
 
 import argparse
